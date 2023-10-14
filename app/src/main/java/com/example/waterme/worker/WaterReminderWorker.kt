@@ -1,5 +1,6 @@
 package com.example.waterme.worker
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -16,16 +17,16 @@ class WaterReminderWorker(
     workerParams: WorkerParameters
 ) : Worker(context, workerParams) {
 
-    // Arbitrary id number
     val notificationId = 17
 
+    @SuppressLint("MissingPermission")
     override fun doWork(): Result {
         val intent = Intent(applicationContext, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
 
         val pendingIntent: PendingIntent = PendingIntent
-            .getActivity(applicationContext, 0, intent, 0)
+            .getActivity(applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
         val plantName = inputData.getString(nameKey)
 
